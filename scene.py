@@ -1,10 +1,105 @@
 from manim import *
 
+from shared.charge_point import PositiveCharge, NegativeCharge
+from shared.electrostatic_scene import ElectrostaticScene
 
-class CulombsLaw(MovingCameraScene):
+
+class IntroduceCharges(ElectrostaticScene):
     def construct(self):
-        d1 = Dot().set_color(BLUE)
+        positive = PositiveCharge()
+        negative = NegativeCharge()
+        another_one = NegativeCharge()
 
+        another_one.move_to([0, 2, 0])
+
+        self.add_rigid_charge(another_one)
+        self.add_rigid_charge(positive)
+        self.add_floating_charge(negative)
+
+        self.play(Create(another_one))
+
+        positive.generate_target()
+        positive.target.move_to(LEFT*2.5)
+
+        self.play(Create(positive))
+        self.play(MoveToTarget(positive))
+
+        negative.generate_target()
+
+        negative.target.move_to(RIGHT*2.5)
+
+        self.play(Create(negative))
+        self.play(MoveToTarget(negative))
+
+        negative.generate_target()
+        negative.target.text.set_opacity(0)
+        negative.target.scale(0.5)
+
+        positive.generate_target()
+        positive.target.text.set_opacity(0)
+        positive.target.scale(0.5)
+
+        self.play(Create(Vector(UP)))
+
+        for point, force in self.compute_forces():
+            print(point, force)
+
+            vector = Vector(force)
+
+            point.add(vector)
+
+            vector.move_to(point)
+
+            self.play(Create(vector))
+
+
+class Point(MovingCameraScene):
+    def construct(self):
+        positive = PositiveCharge()
+
+        self.play(Create(positive))
+
+        positive.generate_target()
+
+        positive.target.move_to(LEFT*2.5)
+
+        self.play(MoveToTarget(positive))
+
+        negative = NegativeCharge()
+
+        negative.generate_target()
+
+        negative.target.move_to(RIGHT*2.5)
+
+        self.play(Create(negative))
+        self.play(MoveToTarget(negative))
+
+        negative.generate_target()
+        negative.target.text.set_opacity(0)
+        negative.target.scale(0.25)
+
+        positive.generate_target()
+        positive.target.text.set_opacity(0)
+        positive.target.scale(0.25)
+
+        self.play(MoveToTarget(negative), MoveToTarget(positive))
+
+        positive.generate_target()
+        positive.target.move_to(ORIGIN)
+
+        grid = Axes(
+            x_range=(-4, 4, 0.5),
+            y_range=(-4, 4, 0.5),
+            x_length=8,
+            y_length=8,
+        )
+
+        self.add_foreground_mobjects(positive, negative)
+        self.play(Create(grid), MoveToTarget(positive))
+
+
+class CulombsLaw(Scene):
+    def construct(self):
         axes = Axes(
             x_range=(0, 11, 1),
             y_range=(0, 4, 1),

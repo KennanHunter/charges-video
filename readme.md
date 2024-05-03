@@ -9,11 +9,11 @@ pip install manim
 ## Low quality (development)
 
 ```bash
-manim -ql scene.py
+manim -aql scene.py
 ```
 
 ## High quality
 
 ```bash
-manim -qh scene.py
+manim -aqh scene.py
 ```
