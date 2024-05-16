@@ -10,7 +10,7 @@ class IntroduceCharges(ElectrostaticScene):
         negative = NegativeCharge()
         another_one = NegativeCharge()
 
-        another_one.move_to([0, 2, 0])
+        another_one.move_to([0, 2.5, 0])
 
         self.add_rigid_charge(another_one)
         self.add_rigid_charge(positive)
@@ -39,18 +39,25 @@ class IntroduceCharges(ElectrostaticScene):
         positive.target.text.set_opacity(0)
         positive.target.scale(0.5)
 
-        self.play(Create(Vector(UP)))
-
         for point, force in self.compute_forces():
             print(point, force)
 
-            vector = Vector(force)
+            force = np.multiply(force, 10)
 
-            point.add(vector)
+            start = point.get_center()
+            end = np.add(start, [force[0], force[1], 0])
 
-            vector.move_to(point)
+            vector = Arrow(start, end)
+            point.set_vector(vector)
 
-            self.play(Create(vector))
+            self.bring_to_front(point)
+
+            self.play(GrowArrow(vector))
+
+        for i in range(1,15):
+            self.simulate_forces()
+            self.play(
+                *map(lambda charge: MoveToTarget(charge), self.get_charges()))
 
 
 class Point(MovingCameraScene):

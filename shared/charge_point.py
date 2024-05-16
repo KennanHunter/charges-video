@@ -4,7 +4,7 @@ from manim import Tex
 from numpy import dtype, floating, ndarray
 
 
-class Charge(VGroup):
+class Charge(VDict):
     def __init__(self, magnitude: float, color: ManimColor, ** kwargs):
         super().__init__(**kwargs)
 
@@ -13,10 +13,17 @@ class Charge(VGroup):
             f"{"+" if magnitude > 0 else ""}{magnitude}C", stroke_width=1)
         self.magnitude = magnitude
 
-        self.add(self.circle, self.text)
+        self.add_key_value_pair("base", self.circle)
+        self.add_key_value_pair("text", self.text)
 
     def get_center(self) -> ndarray[Any, dtype[floating[Any]]] | tuple[float, float, float]:
         return self.circle.get_center()
+
+    def set_vector(self, vector: Arrow):
+        self.add_key_value_pair("vector", vector)
+
+    def get_vector(self) -> Arrow:
+        return self["vector"]
 
 
 class PositiveCharge(Charge):
