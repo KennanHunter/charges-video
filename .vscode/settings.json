@@ -2,5 +2,6 @@
     "cSpell.words": [
         "culombs",
         "mobjects"
-    ]
+    ],
+    "python.analysis.typeCheckingMode": "off"
 }

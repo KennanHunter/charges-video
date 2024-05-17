@@ -8,9 +8,9 @@ class Charge(VDict):
     def __init__(self, magnitude: float, color: ManimColor, ** kwargs):
         super().__init__(**kwargs)
 
-        self.circle = Circle(1, color, fill_opacity=1).scale(abs(magnitude))
+        self.circle = Circle(1.5, color, fill_opacity=1).scale(abs(magnitude))
         self.text = Tex(
-            f"{"+" if magnitude > 0 else ""}{magnitude}C", stroke_width=1)
+            ("+" if magnitude > 0 else "") + str(magnitude) + "C", stroke_width=1).scale(1.5)
         self.magnitude = magnitude
 
         self.add_key_value_pair("base", self.circle)
