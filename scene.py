@@ -8,15 +8,9 @@ class IntroduceCharges(ElectrostaticScene):
     def construct(self):
         positive = PositiveCharge()
         negative = NegativeCharge()
-        another_one = NegativeCharge()
 
-        another_one.move_to([0, 2.5, 0])
-
-        self.add_rigid_charge(another_one)
         self.add_rigid_charge(positive)
         self.add_floating_charge(negative)
-
-        self.play(Create(another_one))
 
         positive.generate_target()
         positive.target.move_to(LEFT*2.5)
@@ -53,11 +47,6 @@ class IntroduceCharges(ElectrostaticScene):
             self.bring_to_front(point)
 
             self.play(GrowArrow(vector))
-
-        for i in range(1,15):
-            self.simulate_forces()
-            self.play(
-                *map(lambda charge: MoveToTarget(charge), self.get_charges()))
 
 
 class Point(MovingCameraScene):
@@ -118,7 +107,7 @@ class CulombsLaw(Scene):
         ).move_to(LEFT*1.1)
 
         labels = axes.get_axis_labels(
-            Text("Displacement (m)").scale(0.45), Text("Force (N)").scale(0.45)
+            Text("Displacement").scale(0.45), Text("Force").scale(0.45)
         )
 
         self.play(Create(axes))
@@ -141,8 +130,8 @@ class CulombsLaw(Scene):
         )
 
         inverted_labels = axes.get_axis_labels(
-            Text("Inverse of Displacement (m)").scale(
-                0.45), Text("Force (N)").scale(0.45)
+            Text("Inverse of Displacement").scale(
+                0.45), Text("Force").scale(0.45)
         )
 
         self.play(Wait(1))
